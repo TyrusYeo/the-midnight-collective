@@ -6,7 +6,7 @@ interface VideoCardProps {
   initialX: number;
   initialY: number;
   initialRotation?: number;
-  videoId: string; // YouTube video ID
+  srcUrl?: string;
   label?: string;
   width?: number;
 }
@@ -15,9 +15,9 @@ export default function VideoCard({
   initialX,
   initialY,
   initialRotation = 0,
-  videoId,
+  srcUrl = "https://www.youtube.com/embed/DUYmSt8qCas?controls=0&showinfo=0&modestbranding=1&rel=0", // TOOD add &autoplay=1 tmr
   label,
-  width = 340,
+  width = 600,
 }: VideoCardProps) {
   const aspectHeight = Math.round((width - 32) * (9 / 16));
 
@@ -32,22 +32,9 @@ export default function VideoCard({
           width,
           background: "var(--card-surface-warm)",
           borderRadius: "2px",
-          padding: "16px 16px 20px",
           fontFamily: "var(--font-dm-sans), sans-serif",
         }}
       >
-        {/* Top tape strip decoration */}
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
-          <div
-            style={{
-              width: 48,
-              height: 14,
-              background: "rgba(181, 168, 154, 0.45)",
-              borderRadius: "2px",
-              border: "1px solid rgba(181, 168, 154, 0.3)",
-            }}
-          />
-        </div>
 
         {/* Video frame */}
         <div
@@ -62,7 +49,7 @@ export default function VideoCard({
           onPointerDown={(e) => e.stopPropagation()}
         >
           <iframe
-            src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+            src={srcUrl}
             style={{ width: "100%", height: "100%", border: "none" }}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import DraggableCard from "./DraggableCard";
 
 interface FooterCardProps {
@@ -13,6 +14,11 @@ export default function FooterCard({
   initialY,
   initialRotation = 0,
 }: FooterCardProps) {
+  const [viewportWidth, setViewportWidth] = useState(1440);
+  useEffect(() => {
+    setViewportWidth(window.innerWidth);
+  }, []);
+
   return (
     <DraggableCard
       initialX={initialX}
@@ -22,7 +28,7 @@ export default function FooterCard({
     >
       <div
         style={{
-          width: 420,
+          width: viewportWidth,
           background: "var(--card-surface)",
           borderRadius: "2px",
           padding: "14px 32px",

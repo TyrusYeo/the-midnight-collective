@@ -29,8 +29,8 @@ export default function PostcardCard({
     >
       <div
         style={{
-          width: 340,
-          height: 220,
+          width: 550,
+          // height: 220,
           background: "var(--card-surface)",
           borderRadius: "2px",
           display: "flex",
@@ -69,7 +69,7 @@ export default function PostcardCard({
         {/* Right: address / stamp area */}
         <div
           style={{
-            width: 130,
+            width: 200,
             padding: "16px 14px",
             display: "flex",
             flexDirection: "column",
@@ -80,7 +80,7 @@ export default function PostcardCard({
           <div
             style={{
               alignSelf: "flex-end",
-              width: 36,
+              width: 55,
               height: 44,
               border: "1px solid var(--card-border)",
               borderRadius: "1px",
