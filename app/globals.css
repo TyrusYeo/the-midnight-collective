@@ -5,12 +5,14 @@
   --font-serif: var(--font-instrument-serif);
 
   /* Cutting board palette */
-  --board-base: #d8e0d4;
-  --board-grid: #c2cebe;
-  --board-tick: #b0bca9;
+  --board-base: rgba(122, 118, 80, 1);
+  --board-grid: rgba(248, 255, 253, 0.22);
+  --board-tick: #d1dfc9;
+
+  --header-base: rgba(206, 199, 168, 0.7);
 
   /* Card palette */
-  --card-surface: #faf8f4;
+  --card-surface: #fcf8ef;
   --card-surface-warm: #f5f0e8;
   --card-border: #e2ddd6;
   --card-shadow-base: rgba(55, 50, 42, 0.10);
