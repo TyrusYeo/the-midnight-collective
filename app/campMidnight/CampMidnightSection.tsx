@@ -2,20 +2,21 @@ import PaperCard from "@/components/cards/PaperCard";
 import PostcardCard from "@/components/cards/PostcardCard";
 import VideoCard from "@/components/cards/VideoCard";
 
-const postCardMessage = `Oftentimes, our lives get too noisy for us to dive deeply into exploring our hobbies. 
-There's always too much noise with school, and work is always pilling up, and here is your opportunity to start fresh.
-Our ultimate goal is to carve out uninterrupted time for people like you and I. This time will allow us to unapologetically
-pursue our passions, dive deeply to satisfy our curiosity, and collaborate with others too.
+const postCardMessage = `Oftentimes, our lives get too noisy for us to dive deeply into exploring our hobbies. There's always too much noise with school, and work is always pilling up, and here is your opportunity to start fresh. Our ultimate goal is to carve out uninterrupted time for people like you and I. This time will allow us to unapologetically pursue our passions, dive deeply to satisfy our curiosity, and collaborate with others too.
 
 With this retreat, we’re creating a safe environment where you can explore freely, untethered from distractions and everyday worries. Here are a few, but not all of the themes we'll explore:
 
-Analog rituals in a digital world
-What role should social media play in society
+The value of play in an optimized world
 The beauty of constraint
-How much space should politics take up in our lives
-The place of automation in the future
-Beauty of the mundane
-Besides working on things that addresses these themes, you will engage in activities to grow deeper connections with other creators. Jam out with the people in your car. Give a presentation why you'd be a great presidential candidate. Show people how to make french-styled scrambled eggs. These are just a few things that we will do, the rest will await you. `;
+The commodification of human capability
+The role of social media in [politics/art/relationships/identity]
+Analog rituals in a digital world
+Erosion of nature by human progress
+
+You can engage with these themes in any way you see fit, whether working on a project, demonstrating action, reflecting on lifestyle, or anything in between. We'll also participate in activities to grow deeper connections with new friends. These are just a few things that we will do, the rest will await you. 
+Camp Midnight is on the weekend of April 3rd-5th. And will be somewhere in Michigan, price (not finalized but about $60-80) includes everything that you need (food, events, gas, travel). We just ask you to bring your best self when at Camp Midnight.
+
+`;
 
 export default function CampMidnightSection({ cmX, cy }: { cmX: number, cy: number } ) {
   return (

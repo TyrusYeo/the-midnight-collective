@@ -5,14 +5,14 @@
   --font-serif: var(--font-instrument-serif);
 
   /* Cutting board palette */
-  --board-base: rgba(122, 118, 80, 1);
+  --board-base: rgba(1, 108, 93, 1);
   --board-grid: rgba(248, 255, 253, 0.22);
   --board-tick: #d1dfc9;
 
-  --header-base: rgba(206, 199, 168, 0.7);
+  --header-base: rgb(3, 47, 143);
 
   /* Card palette */
-  --card-surface: #fcf8ef;
+  --card-surface: #feefa0;
   --card-surface-warm: #f5f0e8;
   --card-border: #e2ddd6;
   --card-shadow-base: rgba(55, 50, 42, 0.10);
@@ -20,7 +20,7 @@
 
   /* Text */
   --text-primary: #2c2a27;
-  --text-secondary: #7a7570;
+  --text-secondary: rgb(56, 52, 47);
   --text-accent: #b5a89a;
 
   /* Accent */

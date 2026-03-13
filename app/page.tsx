@@ -46,6 +46,8 @@ export default function Home() {
     }
   };
 
+  // More physical media (pencil that rolls when you hover over it, yellow paper pad with yellow lines, postcard more physical)
+
   return (
     <InfiniteCanvas ref={canvasRef}>
       {() => (
