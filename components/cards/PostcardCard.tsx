@@ -29,12 +29,16 @@ export default function PostcardCard({
     >
       <div
         style={{
-          width: 550,
-          // height: 220,
-          background: "var(--card-surface)",
+          width: 950,
+          background: "#f2e9d5",
           borderRadius: "2px",
           display: "flex",
           overflow: "hidden",
+          backgroundImage: "url('/umich_postcard.png')",
+          backgroundSize: "cover",
+          aspectRatio: "16 / 10",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
           fontFamily: "var(--font-dm-sans), sans-serif",
         }}
       >
@@ -43,16 +47,17 @@ export default function PostcardCard({
           style={{
             flex: 1,
             padding: "18px 16px 18px 20px",
-            borderRight: "1px solid var(--card-border)",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
+            paddingLeft: "10%",
+            paddingTop: "10%",
           }}
         >
           <p
             style={{
               margin: 0,
-              fontSize: 13,
+              fontSize: 16,
               lineHeight: 1.65,
               color: "var(--text-primary)",
             }}
@@ -76,25 +81,8 @@ export default function PostcardCard({
             justifyContent: "space-between",
           }}
         >
-          {/* Stamp placeholder */}
-          <div
-            style={{
-              alignSelf: "flex-end",
-              width: 55,
-              height: 44,
-              border: "1px solid var(--card-border)",
-              borderRadius: "1px",
-              background: "var(--card-surface-warm)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div style={{ fontSize: 18 }}>✦</div>
-          </div>
-
           {/* Address lines */}
-          <div>
+          {/* <div>
             {to && (
               <p style={{ margin: "0 0 4px", fontSize: 11, color: "var(--text-secondary)" }}>
                 {to}
@@ -115,7 +103,7 @@ export default function PostcardCard({
                 {email}
               </a>
             )}
-          </div>
+          </div> */}
 
           {/* Horizontal divider lines (address field style) */}
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>

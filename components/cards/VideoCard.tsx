@@ -30,8 +30,6 @@ export default function VideoCard({
       <div
         style={{
           width,
-          background: "var(--card-surface-warm)",
-          borderRadius: "2px",
           fontFamily: "var(--font-dm-sans), sans-serif",
         }}
       >

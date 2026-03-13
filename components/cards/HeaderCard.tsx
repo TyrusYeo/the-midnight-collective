@@ -35,7 +35,7 @@ export default function HeaderCard({
       <div
         style={{
           width: viewportWidth,
-          background: "var(--header-base)",
+          background: "rgb(53, 62, 186)",
           borderRadius: "2px",
           padding: "18px 32px",
           display: "flex",

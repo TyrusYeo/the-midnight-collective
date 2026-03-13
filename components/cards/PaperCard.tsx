@@ -31,7 +31,7 @@ export default function PaperCard({
         style={{
           width,
           background: "var(--card-surface)",
-          borderRadius: "2px",
+          borderRadius: "4px",
           padding: "20px 22px 24px",
           position: "relative",
           overflow: "hidden",
@@ -46,7 +46,7 @@ export default function PaperCard({
               inset: 0,
               backgroundImage: "repeating-linear-gradient(transparent, transparent 27px, #ddd8d0 27px, #ddd8d0 28px)",
               backgroundPosition: "0 48px",
-              opacity: 0.55,
+              opacity: 0.75,
               pointerEvents: "none",
             }}
           />
@@ -60,7 +60,7 @@ export default function PaperCard({
             top: 0,
             bottom: 0,
             width: 1,
-            background: "rgba(220, 160, 150, 0.35)",
+            background: "rgba(220, 160, 150, 0.45)",
             pointerEvents: "none",
           }}
         />
