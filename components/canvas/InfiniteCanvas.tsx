@@ -10,6 +10,7 @@ export interface CanvasHandle {
 interface InfiniteCanvasProps {
   children: (offset: PanOffset) => React.ReactNode;
   initialOffset?: PanOffset;
+  panEnabled?: boolean;
 }
 
 const GRID_SIZE = 40;
@@ -33,7 +34,7 @@ function springAnimate(
   // Tuning: stiffness controls how snappy, damping controls overshoot.
   // These values give a smooth ~450ms pan with a subtle ease-out.
   const stiffness = 0.025;
-  const damping = 0.8;
+  const damping = 0.75;
 
   const tick = () => {
     velX = velX * damping + (targetX - posX) * stiffness;
@@ -63,7 +64,7 @@ function springAnimate(
 }
 
 const InfiniteCanvas = forwardRef<CanvasHandle, InfiniteCanvasProps>(
-  ({ children, initialOffset = { x: 0, y: 0 } }, ref) => {
+  ({ children, initialOffset = { x: 0, y: 0 }, panEnabled = true }, ref) => {
     const offsetRef = useRef<PanOffset>(initialOffset);
     const [offset, setOffset] = useState<PanOffset>(initialOffset);
     const rafRef = useRef<number | null>(null);
@@ -105,7 +106,7 @@ const InfiniteCanvas = forwardRef<CanvasHandle, InfiniteCanvasProps>(
           overflow: "hidden",
           position: "fixed",
           inset: 0,
-          cursor: "grab",
+          cursor: panEnabled ? "grab" : "crosshair",
           background: `
             linear-gradient(var(--board-grid) 1px, transparent 1px),
             linear-gradient(90deg, var(--board-grid) 1px, transparent 1px),
@@ -114,9 +115,9 @@ const InfiniteCanvas = forwardRef<CanvasHandle, InfiniteCanvasProps>(
           backgroundSize: `${GRID_SIZE}px ${GRID_SIZE}px`,
           backgroundPosition: `${bgX}px ${bgY}px`,
         }}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
+        onPointerDown={panEnabled ? onPointerDown : undefined}
+        onPointerMove={panEnabled ? onPointerMove : undefined}
+        onPointerUp={panEnabled ? onPointerUp : undefined}
       >
         {/* Subtle vignette */}
         <div

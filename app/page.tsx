@@ -8,6 +8,9 @@ import PaperCard from "@/components/cards/PaperCard";
 import VideoCard from "@/components/cards/VideoCard";
 import PostcardCard from "@/components/cards/PostcardCard";
 import CampMidnightSection from "./campMidnight/CampMidnightSection";
+import DrawingCanvas, { DrawingCanvasHandle } from "@/components/tools/DrawingCanvas";
+import PencilTool from "@/components/tools/PencilTool";
+import EraserTool from "@/components/tools/EraserTool";
 
 function useViewport() {
   const [vp, setVp] = useState({ w: 1440, h: 900 });
@@ -19,6 +22,8 @@ function useViewport() {
 
 export default function Home() {
   const canvasRef = useRef<CanvasHandle>(null);
+  const drawingCanvasRef = useRef<DrawingCanvasHandle | null>(null);
+  const [toolHeld, setToolHeld] = useState(false);
   const { w, h } = useViewport();
 
   // Header/footer appear viewport-aligned on load
@@ -31,14 +36,16 @@ export default function Home() {
   const cy = h / 2;
 
   // Camp Midnight cluster origin (cards start here)
-  const cmX = w + 200;
+  const cmX = w + 900;
+  const cmY = h + 200;
   // Approximate visual center of the CM cluster
-  const cmCenterX = cmX + 350;
+  const cmCenterX = cmX + 500;
+  const cmCenterY = cmY;
 
   const handleNavClick = (section: string) => {
     if (section === "Camp Midnight") {
       // Pan so the CM cluster center lands at viewport center
-      canvasRef.current?.panTo(w / 2 - cmCenterX, 0);
+      canvasRef.current?.panTo(w / 2 - cmCenterX, h / 2 - cmCenterY);
     }
     if (section === "say hi!") {
       // Pan back to TMC origin
@@ -49,9 +56,30 @@ export default function Home() {
   // More physical media (pencil that rolls when you hover over it, yellow paper pad with yellow lines, postcard more physical)
 
   return (
-    <InfiniteCanvas ref={canvasRef}>
-      {() => (
+    <InfiniteCanvas ref={canvasRef} panEnabled={!toolHeld}>
+      {(offset) => (
         <>
+          {/* ── DRAWING SURFACE (below all cards, z-index 3) ─────*/}
+          <DrawingCanvas ref={drawingCanvasRef} />
+
+          {/* ── PENCIL ───────────────────────────────────────────*/}
+          <PencilTool
+            initialX={cx - 60}
+            initialY={cy + 320}
+            canvasOffset={offset}
+            drawingCanvasRef={drawingCanvasRef}
+            onHeldChange={setToolHeld}
+          />
+
+          {/* ── ERASER ───────────────────────────────────────────*/}
+          <EraserTool
+            initialX={cx + 220}
+            initialY={cy + 330}
+            canvasOffset={offset}
+            drawingCanvasRef={drawingCanvasRef}
+            onHeldChange={setToolHeld}
+          />
+
           {/* ── HEADER ─────────────────────────────────────────── */}
           <HeaderCard
             initialX={headerX}
@@ -66,18 +94,15 @@ export default function Home() {
             initialX={cx - 380}
             initialY={cy - 200}
             initialRotation={-2}
-            width={360}
+            width={440}
           >
             <p
               style={{
-                fontFamily: "var(--font-instrument-serif), Georgia, serif",
-                fontSize: 34,
-                lineHeight: 1.3,
                 margin: "0 0 14px",
-                color: "var(--text-primary)",
               }}
+              className="header"
             >
-              A space to explore and play.
+              A space to explore and play. With a community.
             </p>
             {/* <p style={{ fontSize: 13, lineHeight: 1.7, color: "var(--text-secondary)", margin: 0 }}>
               The Midnight Collective is a third space for curious makers, thinkers, and builders in the US — a community that gathers around craft, creativity, and conversation.
@@ -89,15 +114,15 @@ export default function Home() {
             initialX={cx - 220}
             initialY={cy - 140}
             initialRotation={1.5}
-            width={290}
+            width={390}
           >
-            <p style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-accent)", margin: "0 0 10px" }}>
+            <p className="subheader mb-2">
               What we do
             </p>
-            <p style={{ fontSize: 13, lineHeight: 1.75, color: "var(--text-primary)", margin: 0 }}>
+            <p className="body">
               We create a space for artisians to gather, collaborate, and explore their craft bravely.
             </p>
-            <p style={{ fontSize: 13, lineHeight: 1.75, color: "var(--text-primary)", margin: "12px 0 0" }}>
+            <p className="body">
               Think: coworking sessions, random heated discussions, and dinner tables turning into studios.
             </p>
           </PaperCard>
@@ -121,26 +146,15 @@ export default function Home() {
           </PaperCard> */}
 
           {/* ── VIDEO CARD ───────────────────────────────────────*/}
-          {/* <VideoCard
+          <VideoCard
             initialX={cx - 420}
             initialY={cy + 100}
             initialRotation={1}
-            width={340}
-          /> */}
-
-          {/* ── POSTCARD: Contact ────────────────────────────────*/}
-          <PostcardCard
-            initialX={cx - 360}
-            initialY={cy + 50}
-            initialRotation={-2.5}
-            to="Say hello"
-            message="We'd love to hear from you — whether you're curious about joining, want to collaborate, or just want to say hi."
-            from="TMC"
-            email="themidnightcollective"
+            width={400}
           />
 
           {/* ═══ CAMP MIDNIGHT CLUSTER ═══════════════════════════ */}
-          <CampMidnightSection cmX={cmX} cy={cy} />
+          <CampMidnightSection cmX={cmX} cy={cmY} />
         </>
       )}
     </InfiniteCanvas>
