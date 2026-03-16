@@ -29,12 +29,12 @@ export default function PostcardCard({
     >
       <div
         style={{
-          width: 950,
+          width: 1150,
           background: "#f2e9d5",
           borderRadius: "2px",
           display: "flex",
           overflow: "hidden",
-          backgroundImage: "url('/umich_postcard.png')",
+          backgroundImage: "url('/canvas-elements/umich_postcard.png')",
           backgroundSize: "cover",
           aspectRatio: "16 / 10",
           backgroundPosition: "center",
@@ -46,26 +46,21 @@ export default function PostcardCard({
         <div
           style={{
             flex: 1,
-            padding: "18px 16px 18px 20px",
+            padding: "124px 108px 124px 108px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            paddingLeft: "10%",
-            paddingTop: "10%",
+            // background: 'red',
           }}
         >
           <p
-            style={{
-              margin: 0,
-              fontSize: 16,
-              lineHeight: 1.65,
-              color: "var(--text-primary)",
-            }}
+            className="body"
+            style={{ whiteSpace: "pre-line" }}
           >
             {message}
           </p>
           {from && (
-            <p style={{ margin: 0, fontSize: 11, color: "var(--text-secondary)" }}>
+            <p className="subheader">
               — {from}
             </p>
           )}
@@ -74,7 +69,7 @@ export default function PostcardCard({
         {/* Right: address / stamp area */}
         <div
           style={{
-            width: 200,
+            width: 100,
             padding: "16px 14px",
             display: "flex",
             flexDirection: "column",
