@@ -56,7 +56,6 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
           initialX={headerX}
           initialY={headerY}
           wordmark="The Midnight Collective"
-          logoSrc="/TMC_logo.png"
           onNavClick={handleNavClick}
           />
       )}

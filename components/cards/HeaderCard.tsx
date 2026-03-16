@@ -7,7 +7,6 @@ interface HeaderCardProps {
   initialX: number;
   initialY: number;
   initialRotation?: number;
-  logoSrc?: string;
   wordmark?: string;
   onNavClick?: (section: string) => void;
 }
@@ -16,14 +15,36 @@ export default function HeaderCard({
   initialX,
   initialY,
   initialRotation = 0,
-  logoSrc,
   wordmark = "The Midnight Collective",
   onNavClick,
 }: HeaderCardProps) {
   const [viewportWidth, setViewportWidth] = useState(1440);
+  const [logoSrc, setLogoSrc] = useState("/logos/variant_0.png");
+  const [shouldCycleLogo, setShouldCycleLogo] = useState(false);
+  const [variantIndex, setVariantIndex] = useState(0);
+
   useEffect(() => {
     setViewportWidth(window.innerWidth);
   }, []);
+
+  const onHoverLogo = () => {
+    setShouldCycleLogo(true);
+  };
+
+  const onLeaveLogo = () => {
+    setShouldCycleLogo(false);
+  };
+
+  useEffect(() => {
+    if (shouldCycleLogo) {
+      const cycleLogo = () => {
+        setVariantIndex((prev) => (prev + 1) % 5);
+        setLogoSrc(`/logos/variant_${variantIndex}.png`);
+      };
+      const interval = setInterval(cycleLogo, 450); // 300ms between variants
+      return () => clearInterval(interval);
+    }
+  }, [shouldCycleLogo, variantIndex]);
 
   return (
     <DraggableCard
@@ -44,28 +65,17 @@ export default function HeaderCard({
           gap: 24,
           fontFamily: "var(--font-dm-sans), sans-serif",
         }}
+        onMouseEnter={onHoverLogo}
+        onMouseLeave={onLeaveLogo}
       >
-        {/* Wordmark / logo */}
+        {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          {logoSrc ? (
-            // eslint-disable-next-line @next/next/no-img-element
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={logoSrc}
               alt={wordmark}
-              style={{ height: 58, objectFit: "contain" }}
+              style={{ height: 98, width: 250, objectFit: "contain", marginLeft: -20 }}
             />
-          ) : (
-            <span
-              style={{
-                fontSize: 15,
-                fontWeight: 500,
-                color: "var(--text-primary)",
-                letterSpacing: "-0.01em",
-              }}
-            >
-              {wordmark}
-            </span>
-          )}
         </div>
 
         {/* Navigation */}
@@ -75,13 +85,8 @@ export default function HeaderCard({
               key={item}
               onPointerDown={(e) => e.stopPropagation()}
               onClick={() => onNavClick?.(item)}
-              style={{
-                fontSize: 12,
-                color: "var(--text-secondary)",
-                letterSpacing: "0.02em",
-                cursor: "pointer",
-                userSelect: "none",
-              }}
+              className="body"
+              style={{ cursor: "pointer" }}
             >
               {item}
             </span>
