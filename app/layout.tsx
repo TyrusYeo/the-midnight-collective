@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Instrument_Serif } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -30,6 +32,7 @@ export default function RootLayout({
         className={`${dmSans.variable} ${instrumentSerif.variable} antialiased`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );

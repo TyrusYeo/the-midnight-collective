@@ -65,7 +65,7 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
       {/* CM Postcard */}
       <PostcardCard
         initialX={cmX + 250}
-        initialY={cy + 300}
+        initialY={cy}
         initialRotation={2}
         to="Interested?"
         message={postCardMessage}
@@ -85,7 +85,7 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
       {/* CM About */}
       <PaperCard
         initialX={cmX + 300}
-        initialY={cy + 150}
+        initialY={cy - 100}
         initialRotation={2}
         width={390}
       >
@@ -119,7 +119,7 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
       {/* CM Details */}
       <PaperCard
         initialX={cmX + 650}
-        initialY={cy - 50}
+        initialY={cy - 270}
         initialRotation={2}
         width={390}
         idleTrigger={detailsTrigger}
@@ -140,7 +140,7 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
 
       <PaperCard
         initialX={cmX + 200}
-        initialY={cy - 260}
+        initialY={cy - 450}
         initialRotation={-1.5}
         width={320}
         ruled={true}
@@ -153,7 +153,7 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
       {/* Apply Card */}
       <PaperCard
         initialX={cmX + 360}
-        initialY={cy - 130}
+        initialY={cy - 320}
         initialRotation={-1.5}
         width={320}
         ruled={true}
