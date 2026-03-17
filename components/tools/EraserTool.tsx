@@ -17,6 +17,7 @@ interface Props {
   canvasOffset: PanOffset;
   drawingCanvasRef: React.RefObject<DrawingCanvasHandle | null>;
   onHeldChange(held: boolean): void;
+  scale?: number;
 }
 
 export default function EraserTool({
@@ -25,6 +26,7 @@ export default function EraserTool({
   canvasOffset,
   drawingCanvasRef,
   onHeldChange,
+  scale = 1,
 }: Props) {
   const posRef = useRef({ x: initialX, y: initialY });
   const [pos, setPos] = useState({ x: initialX, y: initialY });
@@ -33,14 +35,17 @@ export default function EraserTool({
 
   const offsetRef = useRef(canvasOffset);
   useEffect(() => { offsetRef.current = canvasOffset; }, [canvasOffset]);
+  const scaleRef = useRef(scale);
+  useEffect(() => { scaleRef.current = scale; }, [scale]);
 
   // Follow cursor and erase while held
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       if (!isHeldRef.current) return;
       const { x: ox, y: oy } = offsetRef.current;
-      const wx = e.clientX - ox;
-      const wy = e.clientY - oy;
+      const s = scaleRef.current;
+      const wx = (e.clientX - ox) / s;
+      const wy = (e.clientY - oy) / s;
       posRef.current = { x: wx - W / 2, y: wy - H / 2 };
       setPos({ ...posRef.current });
       drawingCanvasRef.current?.eraseAt(wx, wy, ERASE_W, ERASE_H);
@@ -65,8 +70,9 @@ export default function EraserTool({
   const onPointerDown = (e: React.PointerEvent) => {
     e.stopPropagation();
     const { x: ox, y: oy } = offsetRef.current;
-    const wx = e.clientX - ox;
-    const wy = e.clientY - oy;
+    const s = scaleRef.current;
+    const wx = (e.clientX - ox) / s;
+    const wy = (e.clientY - oy) / s;
 
     isHeldRef.current = true;
     setIsHeld(true);

@@ -80,8 +80,6 @@ export default function DraggableCard({
         bounceDamping: 20,
       }}
       initial={{
-        x: initialX,
-        y: initialY,
         rotate: initialRotation,
         scale: 1,
       }}
@@ -105,6 +103,8 @@ export default function DraggableCard({
       onDragEnd={handleDragEnd}
       style={{
         position: "absolute",
+        left: initialX,
+        top: initialY,
         zIndex,
         cursor: isDragging ? "grabbing" : "grab",
         touchAction: "none",

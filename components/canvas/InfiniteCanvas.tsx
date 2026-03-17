@@ -11,6 +11,7 @@ interface InfiniteCanvasProps {
   children: (offset: PanOffset) => React.ReactNode;
   initialOffset?: PanOffset;
   panEnabled?: boolean;
+  scale?: number;
 }
 
 const GRID_SIZE = 40;
@@ -64,7 +65,7 @@ function springAnimate(
 }
 
 const InfiniteCanvas = forwardRef<CanvasHandle, InfiniteCanvasProps>(
-  ({ children, initialOffset = { x: 0, y: 0 }, panEnabled = true }, ref) => {
+  ({ children, initialOffset = { x: 0, y: 0 }, panEnabled = true, scale = 1 }, ref) => {
     const offsetRef = useRef<PanOffset>(initialOffset);
     const [offset, setOffset] = useState<PanOffset>(initialOffset);
     const rafRef = useRef<number | null>(null);
@@ -135,7 +136,7 @@ const InfiniteCanvas = forwardRef<CanvasHandle, InfiniteCanvasProps>(
         <div
           style={{
             position: "absolute",
-            transform: `translate(${offset.x}px, ${offset.y}px)`,
+            transform: `translate(${offset.x}px, ${offset.y}px) scale(${scale})`,
             transformOrigin: "0 0",
             willChange: "transform",
           }}

@@ -14,6 +14,7 @@ export default function TMCSection(
         setToolHeld,
         handleNavClick,
         showHeader = true,
+        scale = 1,
     }: {
         cx: number,
         cy: number,
@@ -22,6 +23,7 @@ export default function TMCSection(
         setToolHeld: (held: boolean) => void,
         handleNavClick: (section: string) => void,
         showHeader?: boolean,
+        scale?: number,
     } ) {
     // Header/footer appear viewport-aligned on load
     const headerX = 0;
@@ -38,6 +40,7 @@ export default function TMCSection(
             canvasOffset={offset}
             drawingCanvasRef={drawingCanvasRef}
             onHeldChange={setToolHeld}
+            scale={scale}
             />
 
             {/* ── ERASER ───────────────────────────────────────────*/}
@@ -47,6 +50,7 @@ export default function TMCSection(
             canvasOffset={offset}
             drawingCanvasRef={drawingCanvasRef}
             onHeldChange={setToolHeld}
+            scale={scale}
             />
 
             {/* ── HEADER ─────────────────────────────────────────── */}

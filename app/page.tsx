@@ -14,11 +14,23 @@ function useViewport() {
   return vp;
 }
 
+function useScale() {
+  const [scale, setScale] = useState(1);
+  useEffect(() => {
+    const update = () => setScale(window.innerWidth < 768 ? 0.6 : 1);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  return scale;
+}
+
 export default function Home() {
   const canvasRef = useRef<CanvasHandle>(null);
   const drawingCanvasRef = useRef<DrawingCanvasHandle | null>(null);
   const [toolHeld, setToolHeld] = useState(false);
   const { w, h } = useViewport();
+  const scale = useScale();
 
   // Header/footer appear viewport-aligned on load
   const headerX = 0;
@@ -37,11 +49,9 @@ export default function Home() {
 
   const handleNavClick = (section: string) => {
     if (section === "Camp Midnight") {
-      // Pan so the CM cluster center lands at viewport center
-      canvasRef.current?.panTo(w / 2 - cmCenterX, h / 2 - cmCenterY);
+      canvasRef.current?.panTo(w / 2 - cmCenterX * scale, h / 2 - cmCenterY * scale);
     }
     if (section === "say hi!") {
-      // Pan back to TMC origin
       canvasRef.current?.panTo(0, 0);
     }
   };
@@ -49,11 +59,11 @@ export default function Home() {
   // More physical media (pencil that rolls when you hover over it, yellow paper pad with yellow lines, postcard more physical)
 
   return (
-    <InfiniteCanvas ref={canvasRef} panEnabled={!toolHeld}>
+    <InfiniteCanvas ref={canvasRef} panEnabled={!toolHeld} scale={scale}>
       {(offset) => (
         <>
           {/* ═══ TMC SECTION ═══════════════════════════ */}
-          <TMCSection cx={cx} cy={cy} offset={offset} drawingCanvasRef={drawingCanvasRef} setToolHeld={setToolHeld} handleNavClick={handleNavClick} />
+          <TMCSection cx={cx} cy={cy} offset={offset} drawingCanvasRef={drawingCanvasRef} setToolHeld={setToolHeld} handleNavClick={handleNavClick} scale={scale} />
 
           {/* ═══ CAMP MIDNIGHT SECTION ═══════════════════════════ */}
           <CampMidnightSection cmX={cmX} cy={cmY} headerX={headerX} headerY={headerY} handleNavClick={handleNavClick} />

@@ -16,6 +16,7 @@ interface Props {
   canvasOffset: PanOffset;
   drawingCanvasRef: React.RefObject<DrawingCanvasHandle | null>;
   onHeldChange(held: boolean): void;
+  scale?: number;
 }
 
 export default function PencilTool({
@@ -24,6 +25,7 @@ export default function PencilTool({
   canvasOffset,
   drawingCanvasRef,
   onHeldChange,
+  scale = 1,
 }: Props) {
   const posRef = useRef({ x: initialX, y: initialY });
   const [pos, setPos] = useState({ x: initialX, y: initialY });
@@ -38,9 +40,11 @@ export default function PencilTool({
   // Nudge velocity from proximity pushes, decays over time
   const nudgeVel = useRef({ x: 0, y: 0 });
 
-  // Always-current canvas offset for coord conversion in event handlers
+  // Always-current canvas offset and scale for coord conversion in event handlers
   const offsetRef = useRef(canvasOffset);
   useEffect(() => { offsetRef.current = canvasOffset; }, [canvasOffset]);
+  const scaleRef = useRef(scale);
+  useEffect(() => { scaleRef.current = scale; }, [scale]);
 
   const rafRef = useRef<number | null>(null);
   const prevMouse = useRef({ x: 0, y: 0 });
@@ -76,9 +80,10 @@ export default function PencilTool({
       const { x: ox, y: oy } = offsetRef.current;
 
       if (isHeldRef.current) {
-        // Convert screen cursor → world coords
-        const wx = e.clientX - ox;
-        const wy = e.clientY - oy;
+        // Convert screen cursor → world coords (divide by scale for CSS scale() transform)
+        const s = scaleRef.current;
+        const wx = (e.clientX - ox) / s;
+        const wy = (e.clientY - oy) / s;
         // Tip (left edge) stays at cursor.
         // transformOrigin: "0% 50%" means rotation is anchored to left-center,
         // so left = cursorWorldX, top = cursorWorldY - H/2 keeps the tip pinned.
@@ -91,8 +96,9 @@ export default function PencilTool({
 
       // Proximity rolling ─────────────────────────────────────────────────────
       const { x: ox2, y: oy2 } = offsetRef.current;
-      const scx = posRef.current.x + W / 2 + ox2;
-      const scy = posRef.current.y + H / 2 + oy2;
+      const s2 = scaleRef.current;
+      const scx = posRef.current.x * s2 + W * s2 / 2 + ox2;
+      const scy = posRef.current.y * s2 + H * s2 / 2 + oy2;
       const dx = e.clientX - scx;
       const dy = e.clientY - scy;
       const dist = Math.sqrt(dx * dx + dy * dy);
@@ -136,8 +142,9 @@ export default function PencilTool({
   const onPointerDown = (e: React.PointerEvent) => {
     e.stopPropagation();
     const { x: ox, y: oy } = offsetRef.current;
-    const wx = e.clientX - ox;
-    const wy = e.clientY - oy;
+    const s = scaleRef.current;
+    const wx = (e.clientX - ox) / s;
+    const wy = (e.clientY - oy) / s;
 
     isHeldRef.current = true;
     setIsHeld(true);
