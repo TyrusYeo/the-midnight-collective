@@ -50,7 +50,7 @@ export default function PostcardCard({
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            // background: 'red',
+            gap: 8
           }}
         >
           <p

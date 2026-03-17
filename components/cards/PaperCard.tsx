@@ -9,6 +9,7 @@ interface PaperCardProps {
   width?: number;
   children: React.ReactNode;
   ruled?: boolean;
+  idleTrigger?: number;
 }
 
 export default function PaperCard({
@@ -18,14 +19,15 @@ export default function PaperCard({
   width = 280,
   children,
   ruled = true,
+  idleTrigger,
 }: PaperCardProps) {
-  const lineCount = 14;
 
   return (
     <DraggableCard
       initialX={initialX}
       initialY={initialY}
       initialRotation={initialRotation}
+      idleTrigger={idleTrigger}
     >
       <div
         style={{

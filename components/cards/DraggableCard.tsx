@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useAnimate } from "framer-motion";
 
 interface DraggableCardProps {
   initialX: number;
@@ -11,6 +11,7 @@ interface DraggableCardProps {
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  idleTrigger?: number;
 }
 
 let globalZ = 10;
@@ -23,17 +24,29 @@ export default function DraggableCard({
   children,
   className = "",
   style = {},
+  idleTrigger = 0,
 }: DraggableCardProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const [zIndex, setZIndex] = useState(zIndexBase);
+  const [scope, animateIdle] = useAnimate();
 
-  // New random tilt angle generated on each press — gives each pick-up
-  // a slightly different feel so it doesn't feel mechanical.
-  const tiltRef = useRef(0);
+  // Idle hint animation: lift, slide, place
+  useEffect(() => {
+    if (!idleTrigger) return;
+    const run = async () => {
+      handleRotate();
+      handleDragStart();
+      await animateIdle(scope.current, { y: -20 }, { duration: 0.25, ease: "easeOut" });
+      await animateIdle(scope.current, { x: -50 }, { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] });
+      await animateIdle(scope.current, { y: 0 }, { duration: 0.3, ease: "easeIn" });
+      handleDragEnd();
+    };
+    run().catch(() => {});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idleTrigger]);
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-    e.stopPropagation();
+  const handleRotate = () => {
     // ±3 degrees, biased away from zero so there's always a visible tilt
     const sign = Math.random() < 0.5 ? -1 : 1;
     const maxDeg = 5.6;
@@ -41,6 +54,15 @@ export default function DraggableCard({
     const randomDeg = minDeg + Math.floor(Math.random() * (maxDeg - minDeg + 1));
     tiltRef.current = sign * randomDeg;
     setIsPressed(true);
+  }
+
+  // New random tilt angle generated on each press — gives each pick-up
+  // a slightly different feel so it doesn't feel mechanical.
+  const tiltRef = useRef(0);
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    e.stopPropagation();
+    handleRotate();
     globalZ += 1;
     setZIndex(globalZ);
   };
@@ -70,6 +92,7 @@ export default function DraggableCard({
 
   return (
     <motion.div
+      ref={scope}
       drag
       dragMomentum={true}
       dragElastic={0.06}

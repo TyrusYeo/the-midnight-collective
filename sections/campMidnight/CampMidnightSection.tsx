@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import HeaderCard from "@/components/cards/HeaderCard";
 import PaperCard from "@/components/cards/PaperCard";
 import PostcardCard from "@/components/cards/PostcardCard";
@@ -19,37 +22,56 @@ You can engage with these themes in any way you see fit, whether working on a pr
 
 export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHeader = false, handleNavClick }: { cmX: number, cy: number, headerX: number, headerY: number, showHeader?: boolean, handleNavClick: (section: string) => void } ) {
 
+  const [detailsTrigger, setDetailsTrigger] = useState(0);
+  const [applyTrigger, setApplyTrigger] = useState(0);
+  const hasAnimated = useRef(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const cancelIdle = () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+
+    const scheduleIdle = () => {
+      cancelIdle();
+      timerRef.current = setTimeout(async () => {
+        if (hasAnimated.current) return;
+        hasAnimated.current = true;
+        // Remove listeners — animation fires once, user interaction won't re-cancel
+        window.removeEventListener("pointermove", cancelIdle);
+        window.removeEventListener("pointerdown", cancelIdle);
+        setDetailsTrigger(t => t + 1);
+        await new Promise<void>(r => setTimeout(r, 1400));
+        setApplyTrigger(t => t + 1);
+      }, 3000);
+    };
+    window.addEventListener("pointermove", cancelIdle);
+    window.addEventListener("pointerdown", cancelIdle);
+    scheduleIdle();
+
+    return () => {
+      cancelIdle();
+      window.removeEventListener("pointermove", cancelIdle);
+      window.removeEventListener("pointerdown", cancelIdle);
+    };
+  }, []);
+
   const onClickApply = () => {
     window.open("https://docs.google.com/forms/d/e/1FAIpQLSe-Udpf6Mb8JOM2mKKGya9LussRHR1cwCWBijuNzUdY4h24XQ/viewform?usp=sharing&ouid=107657121064593991167", "_blank");
   };
 
   return (
     <div>
-      <PaperCard
-        initialX={cmX + 80}
-        initialY={cy - 260}
-        initialRotation={-1.5}
-        width={320}
-        ruled={true}
-      >
-        <p className="header mb-2">
-          Camp Midnight
-        </p>
-      </PaperCard>
-
-      <PaperCard
-        initialX={cmX + 300}
-        initialY={cy - 200}
-        initialRotation={-1.5}
-        width={320}
-        ruled={true}
-      >
-        <div onClick={onClickApply}>
-          <p className="header mb-2 cursor-pointer" style={{ textDecoration: "underline", textDecorationColor: "var(--accent-sage)" }}>
-            Come along for the ride. Apply here.
-          </p>
-        </div>
-      </PaperCard>
+      {/* CM Postcard */}
+      <PostcardCard
+        initialX={cmX + 250}
+        initialY={cy + 300}
+        initialRotation={2}
+        to="Interested?"
+        message={postCardMessage}
+        from="Camp Midnight"
+        email="camp@themidnightcollective.co"
+      />
 
       {showHeader && (
           <HeaderCard
@@ -63,7 +85,7 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
       {/* CM About */}
       <PaperCard
         initialX={cmX + 300}
-        initialY={cy + 200}
+        initialY={cy + 150}
         initialRotation={2}
         width={390}
       >
@@ -94,23 +116,13 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
         width={360}
       /> */}
 
-      {/* CM Postcard */}
-      <PostcardCard
-        initialX={cmX + 460}
-        initialY={cy + 400}
-        initialRotation={2}
-        to="Interested?"
-        message={postCardMessage}
-        from="Camp Midnight"
-        email="camp@themidnightcollective.co"
-      />
-
       {/* CM Details */}
       <PaperCard
-        initialX={cmX + 800}
+        initialX={cmX + 650}
         initialY={cy - 50}
         initialRotation={2}
         width={390}
+        idleTrigger={detailsTrigger}
       >
         <p className="subheader mb-2">
           Details:
@@ -124,6 +136,34 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
         <p className="body">
           - Price: $60-80, all inclusive
         </p>
+      </PaperCard>
+
+      <PaperCard
+        initialX={cmX + 200}
+        initialY={cy - 260}
+        initialRotation={-1.5}
+        width={320}
+        ruled={true}
+      >
+        <p className="header mb-2">
+          Camp Midnight
+        </p>
+      </PaperCard>
+
+      {/* Apply Card */}
+      <PaperCard
+        initialX={cmX + 360}
+        initialY={cy - 130}
+        initialRotation={-1.5}
+        width={320}
+        ruled={true}
+        idleTrigger={applyTrigger}
+      >
+        <div onClick={onClickApply}>
+          <p className="header mb-2 cursor-pointer" style={{ textDecoration: "underline", textDecorationColor: "var(--accent-sage)" }}>
+            Come along for the ride. Apply here.
+          </p>
+        </div>
       </PaperCard>
     </div>
   );
