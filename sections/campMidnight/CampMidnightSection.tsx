@@ -20,7 +20,11 @@ With this retreat, we’re creating a safe environment where you can explore fre
 You can engage with these themes in any way you see fit, whether working on a project, demonstrating action, reflecting on lifestyle, or anything in between. We'll also participate in activities to grow deeper connections with new friends. These are just a few things that we will do, the rest will await you. 
 `;
 
-export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHeader = false, handleNavClick }: { cmX: number, cy: number, headerX: number, headerY: number, showHeader?: boolean, handleNavClick: (section: string) => void } ) {
+const returnWithScale = (value: number, scale: number) => {
+  return value * scale;
+}
+
+export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHeader = false, handleNavClick, scale }: { cmX: number, cy: number, headerX: number, headerY: number, showHeader?: boolean, handleNavClick: (section: string) => void, scale: number } ) {
 
   const [detailsTrigger, setDetailsTrigger] = useState(0);
   const [applyTrigger, setApplyTrigger] = useState(0);
@@ -64,7 +68,7 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
     <div>
       {/* CM Postcard */}
       <PostcardCard
-        initialX={cmX + 250}
+        initialX={cmX}
         initialY={cy}
         initialRotation={2}
         to="Interested?"
@@ -84,8 +88,8 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
 
       {/* CM About */}
       <PaperCard
-        initialX={cmX + 300}
-        initialY={cy - 100}
+        initialX={cmX + 300 * scale}
+        initialY={returnWithScale(cy, scale)}
         initialRotation={2}
         width={390}
       >
@@ -101,7 +105,7 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
       </PaperCard>
 
       <Stamp
-        initialX={cmX + 1200}
+        initialX={cmX + 1000}
         initialY={cy + 200}
         initialRotation={2}
         variation={StampVariation.BRITISH}
@@ -118,8 +122,8 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
 
       {/* CM Details */}
       <PaperCard
-        initialX={cmX + 650}
-        initialY={cy - 270}
+        initialX={cmX + 550}
+        initialY={returnWithScale(cy, scale) - 270}
         initialRotation={2}
         width={390}
         idleTrigger={detailsTrigger}
@@ -139,8 +143,8 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
       </PaperCard>
 
       <PaperCard
-        initialX={cmX + 200}
-        initialY={cy - 450}
+        initialX={cmX + 100}
+        initialY={returnWithScale(cy, scale) - 300}
         initialRotation={-1.5}
         width={320}
         ruled={true}
@@ -152,8 +156,8 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
 
       {/* Apply Card */}
       <PaperCard
-        initialX={cmX + 360}
-        initialY={cy - 320}
+        initialX={cmX + 360 * scale}
+        initialY={returnWithScale(cy, scale) - 200}
         initialRotation={-1.5}
         width={320}
         ruled={true}

@@ -17,7 +17,7 @@ function useViewport() {
 function useScale() {
   const [scale, setScale] = useState(1);
   useEffect(() => {
-    const update = () => setScale(window.innerWidth < 768 ? 0.6 : 1);
+    const update = () => setScale(window.innerWidth < 768 ? 0.4 : 1);
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
@@ -66,7 +66,7 @@ export default function Home() {
           <TMCSection cx={cx} cy={cy} offset={offset} drawingCanvasRef={drawingCanvasRef} setToolHeld={setToolHeld} handleNavClick={handleNavClick} scale={scale} />
 
           {/* ═══ CAMP MIDNIGHT SECTION ═══════════════════════════ */}
-          <CampMidnightSection cmX={cmX} cy={cmY} headerX={headerX} headerY={headerY} handleNavClick={handleNavClick} />
+          <CampMidnightSection cmX={cmX} cy={cmY} headerX={headerX} headerY={headerY} handleNavClick={handleNavClick} scale={scale} />
         </>
       )}
     </InfiniteCanvas>

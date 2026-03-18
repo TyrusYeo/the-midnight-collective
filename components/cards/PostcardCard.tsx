@@ -29,7 +29,7 @@ export default function PostcardCard({
     >
       <div
         style={{
-          width: 1150,
+          width: 1000,
           background: "#f2e9d5",
           borderRadius: "2px",
           display: "flex",
@@ -46,7 +46,7 @@ export default function PostcardCard({
         <div
           style={{
             flex: 1,
-            padding: "124px 108px 124px 108px",
+            padding: "124px 82px 50px 92px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",

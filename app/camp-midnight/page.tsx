@@ -17,7 +17,7 @@ function useViewport() {
 function useScale() {
   const [scale, setScale] = useState(1);
   useEffect(() => {
-    const update = () => setScale(window.innerWidth < 768 ? 0.6 : 1);
+    const update = () => setScale(window.innerWidth < 768 ? 0.45 : 1);
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
@@ -44,7 +44,7 @@ export default function Home() {
 
   // Camp Midnight cluster origin (cards start here)
   const cmX = w + 900;
-  const cmY = h + 200;
+  const cmY = h;
   // Approximate visual center of the CM cluster
   const cmCenterX = cmX + 500;
   const cmCenterY = cmY;
@@ -76,7 +76,7 @@ export default function Home() {
           <TMCSection cx={cx} cy={cy} offset={offset} drawingCanvasRef={drawingCanvasRef} setToolHeld={setToolHeld} handleNavClick={handleNavClick} showHeader={!showHeaderInCampMidnight} scale={scale} />
 
           {/* ═══ CAMP MIDNIGHT SECTION ═══════════════════════════ */}
-          <CampMidnightSection cmX={cmX} cy={cmY} headerX={headerX} headerY={headerY} showHeader={showHeaderInCampMidnight} handleNavClick={handleNavClick} />
+          <CampMidnightSection cmX={cmX} cy={cmY} headerX={headerX} headerY={headerY} showHeader={showHeaderInCampMidnight} handleNavClick={handleNavClick} scale={scale} />
         </>
       )}
     </InfiniteCanvas>
