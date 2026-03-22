@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import HeaderCard from "@/components/cards/HeaderCard";
 import PaperCard from "@/components/cards/PaperCard";
 import PostcardCard from "@/components/cards/PostcardCard";
@@ -24,12 +24,31 @@ const returnWithScale = (value: number, scale: number) => {
   return value * scale;
 }
 
-export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHeader = false, handleNavClick, scale }: { cmX: number, cy: number, headerX: number, headerY: number, showHeader?: boolean, handleNavClick: (section: string) => void, scale: number } ) {
-
+export default function CampMidnightSection({
+  cmX,
+  cy,
+  headerX,
+  headerY,
+  showHeader = false,
+  handleNavClick,
+  scale,
+  stampVariation = StampVariation.MICHIGAN
+}: { 
+  cmX: number,
+  cy: number,
+  headerX: number,
+  headerY: number,
+  showHeader?: boolean,
+  handleNavClick: (section: string) => void,
+  scale: number,
+  stampVariation?: StampVariation,
+}) {
   const [detailsTrigger, setDetailsTrigger] = useState(0);
   const [applyTrigger, setApplyTrigger] = useState(0);
+  const [isStampSnapped, setIsStampSnapped] = useState(false);
   const hasAnimated = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const postcardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const cancelIdle = () => {
@@ -64,10 +83,15 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
     window.open("https://docs.google.com/forms/d/e/1FAIpQLSe-Udpf6Mb8JOM2mKKGya9LussRHR1cwCWBijuNzUdY4h24XQ/viewform?usp=sharing&ouid=107657121064593991167", "_blank");
   };
 
+  const handleStampSnap = () => {
+    setIsStampSnapped(true);
+  };
+
   return (
     <div>
       {/* CM Postcard */}
       <PostcardCard
+        ref={postcardRef}
         initialX={cmX}
         initialY={cy}
         initialRotation={2}
@@ -75,6 +99,7 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
         message={postCardMessage}
         from="Camp Midnight"
         email="camp@themidnightcollective.co"
+        stampVariation={ isStampSnapped ? stampVariation : undefined}
       />
 
       {showHeader && (
@@ -104,12 +129,16 @@ export default function CampMidnightSection({ cmX, cy, headerX, headerY, showHea
         </p>
       </PaperCard>
 
-      <Stamp
-        initialX={cmX + 1000}
-        initialY={cy + 200}
-        initialRotation={2}
-        variation={StampVariation.BRITISH}
-      />
+      {!isStampSnapped && (
+        <Stamp
+          initialX={cmX + 1000}
+          initialY={cy + 200}
+          initialRotation={2}
+          variation={stampVariation}
+          postcardRef={postcardRef}
+          onSnapToPostcard={handleStampSnap}
+        />
+      )}
 
       {/* CM Video */}
       {/* <VideoCard

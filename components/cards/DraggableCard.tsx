@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useAnimate } from "framer-motion";
+import { calculateRandomTilt } from "../animationUtils";
 
 interface DraggableCardProps {
   initialX: number;
@@ -12,6 +13,7 @@ interface DraggableCardProps {
   className?: string;
   style?: React.CSSProperties;
   idleTrigger?: number;
+  onDragEnd?: (event: any, info: any) => void;
 }
 
 let globalZ = 10;
@@ -25,6 +27,7 @@ export default function DraggableCard({
   className = "",
   style = {},
   idleTrigger = 0,
+  onDragEnd: onDragEndProp,
 }: DraggableCardProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
@@ -40,19 +43,14 @@ export default function DraggableCard({
       await animateIdle(scope.current, { y: -20 }, { duration: 0.25, ease: "easeOut" });
       await animateIdle(scope.current, { x: -50 }, { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] });
       await animateIdle(scope.current, { y: 0 }, { duration: 0.3, ease: "easeIn" });
-      handleDragEnd();
+      handleDragEnd({}, {});
     };
     run().catch(() => {});
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idleTrigger]);
 
   const handleRotate = () => {
-    // ±3 degrees, biased away from zero so there's always a visible tilt
-    const sign = Math.random() < 0.5 ? -1 : 1;
-    const maxDeg = 5.6;
-    const minDeg = 1.3;
-    const randomDeg = minDeg + Math.floor(Math.random() * (maxDeg - minDeg + 1));
-    tiltRef.current = sign * randomDeg;
+    tiltRef.current = calculateRandomTilt();
     setIsPressed(true);
   }
 
@@ -77,9 +75,12 @@ export default function DraggableCard({
     setIsDragging(true);
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (event: any, info: any) => {
     setIsDragging(false);
     setIsPressed(false);
+    if (onDragEndProp) {
+      onDragEndProp(event, info);
+    }
   };
 
   const active = isDragging || isPressed;

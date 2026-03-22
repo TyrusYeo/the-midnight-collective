@@ -1,6 +1,9 @@
 "use client";
 
+import { forwardRef, useMemo } from "react";
 import DraggableCard from "./DraggableCard";
+import { StampVariation } from "../tools/Stamp";
+import { calculateRandomTilt } from "../animationUtils";
 
 interface PostcardCardProps {
   initialX: number;
@@ -10,9 +13,10 @@ interface PostcardCardProps {
   message: string;
   from?: string;
   email?: string;
+  stampVariation?: StampVariation;
 }
 
-export default function PostcardCard({
+const PostcardCard = forwardRef<HTMLDivElement, PostcardCardProps>(({
   initialX,
   initialY,
   initialRotation = 0,
@@ -20,7 +24,23 @@ export default function PostcardCard({
   message,
   from,
   email,
-}: PostcardCardProps) {
+  stampVariation,
+}, ref) => {
+  const stampOffset = useMemo(() => {
+    if (stampVariation === StampVariation.MICHIGAN) {
+      return {
+        x: 0,
+        y: 30,
+      }
+    } else {
+      return {
+        x: 50,
+        y: 16,
+      }
+    }
+  }, [stampVariation]);
+
+
   return (
     <DraggableCard
       initialX={initialX}
@@ -28,6 +48,7 @@ export default function PostcardCard({
       initialRotation={initialRotation}
     >
       <div
+        ref={ref}
         style={{
           width: 1000,
           background: "#f2e9d5",
@@ -74,6 +95,7 @@ export default function PostcardCard({
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
+            position: "relative",
           }}
         >
           {/* Address lines */}
@@ -109,8 +131,32 @@ export default function PostcardCard({
               />
             ))}
           </div>
+
+          {/* Stamp slot */}
+          {stampVariation && (
+            <div
+              style={{
+                position: "absolute",
+                top: stampOffset.y,
+                right: stampOffset.x,
+                pointerEvents: "none",
+                rotate: `${calculateRandomTilt()}deg`,
+              }}
+            >
+              <img
+              src={`/canvas-elements/stamps/${stampVariation}.jpg`}
+              alt=""
+              draggable={false}
+              style={{ display: "block", width: "auto", height: "auto", maxWidth: "210px", maxHeight: "200px"}}
+            />
+            </div>
+          )}
         </div>
       </div>
     </DraggableCard>
   );
-}
+});
+
+PostcardCard.displayName = "PostcardCard";
+
+export default PostcardCard;

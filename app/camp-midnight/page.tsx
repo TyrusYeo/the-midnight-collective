@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import InfiniteCanvas, { CanvasHandle } from "@/components/canvas/InfiniteCanvas";
 import CampMidnightSection from "@/sections/campMidnight/CampMidnightSection";
 import TMCSection from "@/sections/tmc/TMCSection";
 import { DrawingCanvasHandle } from "@/components/tools/DrawingCanvas";
+import { StampVariation } from "@/components/tools/Stamp";
 
 function useViewport() {
   const [vp, setVp] = useState({ w: 1440, h: 900 });
@@ -31,6 +32,7 @@ export default function Home() {
   const [toolHeld, setToolHeld] = useState(false);
   const { w, h } = useViewport();
   const scale = useScale();
+  const stampVariationRef = useRef<StampVariation | null>(null);
 
   const showHeaderInCampMidnight = true;
 
@@ -66,6 +68,11 @@ export default function Home() {
     }
   };
 
+  const stampVariation = useMemo(() => {
+    const index = Math.floor(Math.random() * Object.values(StampVariation).length);
+    return Object.values(StampVariation)[index];
+  }, []);
+
   // More physical media (pencil that rolls when you hover over it, yellow paper pad with yellow lines, postcard more physical)
 
   return (
@@ -76,7 +83,7 @@ export default function Home() {
           <TMCSection cx={cx} cy={cy} offset={offset} drawingCanvasRef={drawingCanvasRef} setToolHeld={setToolHeld} handleNavClick={handleNavClick} showHeader={!showHeaderInCampMidnight} scale={scale} />
 
           {/* ═══ CAMP MIDNIGHT SECTION ═══════════════════════════ */}
-          <CampMidnightSection cmX={cmX} cy={cmY} headerX={headerX} headerY={headerY} showHeader={showHeaderInCampMidnight} handleNavClick={handleNavClick} scale={scale} />
+          <CampMidnightSection cmX={cmX} cy={cmY} headerX={headerX} headerY={headerY} showHeader={showHeaderInCampMidnight} handleNavClick={handleNavClick} scale={scale} stampVariation={stampVariation} />
         </>
       )}
     </InfiniteCanvas>
