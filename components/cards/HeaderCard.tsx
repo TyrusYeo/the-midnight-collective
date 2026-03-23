@@ -74,7 +74,7 @@ export default function HeaderCard({
             <img
               src={logoSrc}
               alt={wordmark}
-              style={{ height: 88, width: 250, objectFit: "contain", marginLeft: -20 }}
+              style={{ height: 60, width: 250, objectFit: "contain", marginLeft: -20 }}
             />
         </div>
 

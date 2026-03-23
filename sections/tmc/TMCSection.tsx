@@ -35,8 +35,8 @@ export default function TMCSection(
 
             {/* ── PENCIL ───────────────────────────────────────────*/}
             <PencilTool
-            initialX={cx - 60}
-            initialY={cy + 320}
+            initialX={cx + 250}
+            initialY={cy + 200}
             canvasOffset={offset}
             drawingCanvasRef={drawingCanvasRef}
             onHeldChange={setToolHeld}
@@ -45,7 +45,7 @@ export default function TMCSection(
 
             {/* ── ERASER ───────────────────────────────────────────*/}
             <EraserTool
-            initialX={cx + 220}
+            initialX={cx + 300}
             initialY={cy + 330}
             canvasOffset={offset}
             drawingCanvasRef={drawingCanvasRef}
