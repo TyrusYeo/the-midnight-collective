@@ -9,6 +9,7 @@ import type { DrawingCanvasHandle } from "./DrawingCanvas";
 const W = 400;
 const H = 300;
 const PROXIMITY = 150; // screen px radius that triggers rolling
+export const PENCIL_STROKE_COLOR = '#c9c9c9';
 
 interface Props {
   initialX: number;
@@ -89,7 +90,7 @@ export default function PencilTool({
         // so left = cursorWorldX, top = cursorWorldY - H/2 keeps the tip pinned.
         posRef.current = { x: wx, y: wy - H / 2 };
         setPos({ ...posRef.current });
-        drawingCanvasRef.current?.continueStroke(wx, wy, "#ffffff", 4);
+        drawingCanvasRef.current?.continueStroke(wx, wy, PENCIL_STROKE_COLOR, 4);
         prevMouse.current = { x: e.clientX, y: e.clientY };
         return;
       }

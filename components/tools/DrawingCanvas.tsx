@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, useImperativeHandle, useRef } from "react";
+import { PENCIL_STROKE_COLOR } from "./PencilTool";
 
 export interface DrawingCanvasHandle {
   startStroke(worldX: number, worldY: number): void;
@@ -35,7 +36,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle>((_, ref) => {
       c.moveTo(px, py);
     },
 
-    continueStroke(wx, wy, strokeColor = "#2e2920", lineWidth = 1.7) {
+    continueStroke(wx, wy, strokeColor = PENCIL_STROKE_COLOR, lineWidth = 1.7) {
       const c = ctx();
       if (!c) return;
       const px = wx + OX;
